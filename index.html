@@ -5,197 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BETEEN Portal</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8fafc;
-            margin: 0;
-            padding: 0;
-            color: #334155;
-            -webkit-tap-highlight-color: transparent; /* เอาไฮไลต์สีฟ้าตอนกดบนมือถือออก */
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; margin: 0; padding: 0; color: #334155; -webkit-tap-highlight-color: transparent; }
         
-        /* --- แถบเมนูด้านบน (Top Navigation) --- */
-        .top-nav {
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        }
-        .app-header {
-            padding: 15px;
-            text-align: center;
-            font-weight: 900;
-            font-size: 20px;
-            color: #1e293b;
-            background: linear-gradient(135deg, #1e293b, #334155);
-            color: white;
-            letter-spacing: 1px;
-        }
-        .nav-tabs {
-            display: flex;
-            justify-content: space-between;
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
-        .nav-tab {
-            flex: 1;
-            text-align: center;
-            padding: 12px 0;
-            color: #94a3b8;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-        .nav-tab .icon { font-size: 18px; }
+        /* Top Navigation */
+        .top-nav { position: sticky; top: 0; background: white; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .app-header { padding: 15px; text-align: center; font-weight: 900; font-size: 20px; background: linear-gradient(135deg, #1e293b, #334155); color: white; letter-spacing: 1px; }
+        .nav-tabs { display: flex; justify-content: space-between; padding: 0; margin: 0; list-style: none; }
+        .nav-tab { flex: 1; text-align: center; padding: 12px 0; color: #94a3b8; font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .nav-tab.active { color: #ec4899; border-bottom-color: #ec4899; }
+        .nav-tab.active .icon { transform: scale(1.1); }
         
-        /* สถานะตอนถูกเลือก */
-        .nav-tab.active {
-            color: #ec4899;
-            border-bottom-color: #ec4899;
-        }
-        .nav-tab.active .icon {
-            transform: scale(1.1);
-        }
-
-        /* พื้นที่เนื้อหา */
-        .content-area {
-            padding: 20px 15px;
-            max-width: 600px; /* ล็อกความกว้างให้พอดีมือถือ/แท็บเล็ต */
-            margin: 0 auto;
-        }
-
-        /* ซ่อนหน้าต่าง */
+        .content-area { padding: 20px 15px; max-width: 600px; margin: 0 auto; }
         .tab-content { display: none; animation: fadeIn 0.3s; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- สไตล์หน้าแรก (ต้อนรับ & วันเกิด) --- */
-        .welcome-box {
-            background: linear-gradient(135deg, #fbcfe8, #f472b6);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 10px rgba(244, 114, 182, 0.2);
-        }
+        /* Styles Tab 1: วันเกิด */
+        .welcome-box { background: linear-gradient(135deg, #fbcfe8, #f472b6); color: white; padding: 20px; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(244, 114, 182, 0.2); }
         .welcome-box h2 { margin: 0 0 5px 0; font-size: 22px; }
         .welcome-box p { margin: 0; font-size: 14px; opacity: 0.9; }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #475569;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
+        .section-title { font-size: 16px; font-weight: bold; color: #475569; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .bday-list { display: flex; flex-direction: column; gap: 12px; }
-        
-        .bday-card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            border: 1px solid #f1f5f9;
-        }
-        .bday-date {
-            background: #fdf2f8;
-            color: #ec4899;
-            min-width: 50px;
-            text-align: center;
-            padding: 8px 5px;
-            border-radius: 8px;
-            font-weight: bold;
-            margin-right: 15px;
-        }
+        .bday-card { background: white; border-radius: 12px; padding: 15px; display: flex; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; }
+        .bday-date { background: #fdf2f8; color: #ec4899; min-width: 50px; text-align: center; padding: 8px 5px; border-radius: 8px; font-weight: bold; margin-right: 15px; }
         .bday-date span { display: block; font-size: 10px; color: #f472b6; font-weight: normal; }
         .bday-info { flex: 1; }
         .bday-name { font-weight: bold; font-size: 16px; color: #1e293b; }
         .bday-unit { font-size: 12px; color: #94a3b8; margin-top: 2px; }
-        
-        .wish-btn {
-            background: #ec4899;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(236, 72, 153, 0.3);
-        }
+        .wish-btn { background: #ec4899; color: white; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(236, 72, 153, 0.3); }
 
-        /* --- สไตล์หน้าโครงสร้างแขวง --- */
-        .org-card {
-            background: white;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            overflow: hidden;
-            border: 1px solid #e2e8f0;
-        }
-        .org-head {
-            padding: 12px 15px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        /* Styles Tab 2: โครงสร้างแขวง */
+        .org-card { background: white; border-radius: 12px; margin-bottom: 15px; overflow: hidden; border: 1px solid #e2e8f0; }
+        .org-head { padding: 12px 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: pointer;}
         .bg-kwang { background: #1e293b; color: white; }
         .bg-unit1 { background: #3b82f6; color: white; }
         .bg-unit2 { background: #ec4899; color: white; }
-        
         .org-members { padding: 10px 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f8fafc;}
-        .org-member-item {
-            background: white;
-            padding: 8px 10px;
-            border-radius: 6px;
-            font-size: 13px;
-            border: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-        }
+        .org-member-item { background: white; padding: 8px 10px; border-radius: 6px; font-size: 13px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; cursor: pointer; }
+        .org-member-item:active { background-color: #f1f5f9; }
         .badge { font-size: 10px; padding: 2px 5px; border-radius: 4px; background: #f1f5f9; color: #64748b;}
     </style>
 </head>
 <body>
 
-    <!-- แถบด้านบน (Sticky Top Nav) -->
     <div class="top-nav">
         <div class="app-header">BETEEN PORTAL</div>
         <ul class="nav-tabs">
             <li class="nav-tab active" onclick="switchTab('home', this)">
-                <span class="icon">🏠</span>
-                <span>หน้าหลัก</span>
+                <span class="icon">🏠</span><span>หน้าหลัก</span>
             </li>
             <li class="nav-tab" onclick="switchTab('org', this)">
-                <span class="icon">🏢</span>
-                <span>โครงสร้าง</span>
+                <span class="icon">🏢</span><span>โครงสร้าง</span>
             </li>
             <li class="nav-tab" onclick="switchTab('cell', this)">
-                <span class="icon">👥</span>
-                <span>เซลล์ฉัน</span>
+                <span class="icon">👥</span><span>เซลล์ฉัน</span>
             </li>
         </ul>
     </div>
 
-    <!-- พื้นที่เนื้อหาหลัก -->
     <div class="content-area">
         
-        <!-- ================= TAB 1: หน้าหลัก (ต้อนรับ & วันเกิด) ================= -->
+        <!-- ================= TAB 1: หน้าหลัก (คนเกิด) ================= -->
         <div id="tab-home" class="tab-content active">
-            
             <div class="welcome-box">
                 <h2>สวัสดี! วันนี้เป็นยังไงบ้าง? ✨</h2>
                 <p>ยินดีต้อนรับสู่ศูนย์รวมข้อมูลแขวง BETEEN</p>
@@ -206,15 +77,15 @@
                 <span style="font-size: 12px; color: #ec4899; font-weight: normal;">ดูทั้งหมด ></span>
             </div>
 
-            <!-- รายชื่อคนเกิดเดือนสิงหาคม -->
             <div class="bday-list">
+                <!-- กดปุ่มเขียนอวยพร จะลิงก์ไป form.html พร้อมส่งชื่อไปกับ URL -->
                 <div class="bday-card">
                     <div class="bday-date">3<span>ส.ค.</span></div>
                     <div class="bday-info">
                         <div class="bday-name">แนน</div>
                         <div class="bday-unit">PRS</div>
                     </div>
-                    <button class="wish-btn">เขียนอวยพร</button>
+                    <button class="wish-btn" onclick="window.location.href='form.html?target=แนน'">เขียนอวยพร</button>
                 </div>
 
                 <div class="bday-card">
@@ -223,101 +94,63 @@
                         <div class="bday-name">พี่เจเจ</div>
                         <div class="bday-unit">หนน. / PRS</div>
                     </div>
-                    <button class="wish-btn">เขียนอวยพร</button>
-                </div>
-
-                <div class="bday-card">
-                    <div class="bday-date">27<span>ส.ค.</span></div>
-                    <div class="bday-info">
-                        <div class="bday-name">ซานะ (สตางค์)</div>
-                        <div class="bday-unit">BeBless</div>
-                    </div>
-                    <button class="wish-btn">เขียนอวยพร</button>
-                </div>
-
-                <div class="bday-card">
-                    <div class="bday-date">30<span>ส.ค.</span></div>
-                    <div class="bday-info">
-                        <div class="bday-name">จูน</div>
-                        <div class="bday-unit">Belove</div>
-                    </div>
-                    <button class="wish-btn">เขียนอวยพร</button>
+                    <button class="wish-btn" onclick="window.location.href='form.html?target=พี่เจเจ'">เขียนอวยพร</button>
                 </div>
             </div>
         </div>
 
 
-        <!-- ================= TAB 2: โครงสร้าง (Org Chart) ================= -->
+        <!-- ================= TAB 2: โครงสร้างแขวง ================= -->
         <div id="tab-org" class="tab-content">
             <div class="section-title" style="margin-bottom: 20px;">🏢 โครงสร้างแขวง BETEEN</div>
+            <p style="font-size:12px; color:#64748b; margin-top:-10px;">(กดที่ชื่อเพื่อเปิดดูของขวัญวันเกิด)</p>
 
-            <!-- แขวง -->
             <div class="org-card">
-                <div class="org-head bg-kwang">
-                    <span>แขวง BETEEN</span>
-                    <span>พี่เจเจ</span>
+                <div class="org-head bg-kwang" onclick="window.location.href='display.html?target=พี่เจเจ'">
+                    <span>แขวง BETEEN</span><span>พี่เจเจ</span>
                 </div>
             </div>
 
-            <!-- สาย BE ONE -->
             <div class="org-card">
-                <div class="org-head bg-unit1">
-                    <span>หน่วย BE ONE</span>
-                    <span>พี่เพลง</span>
+                <div class="org-head bg-unit1" onclick="window.location.href='display.html?target=พี่เพลง'">
+                    <span>หน่วย BE ONE</span><span>พี่เพลง</span>
                 </div>
-                <!-- เซลล์ย่อย -->
                 <div style="padding: 10px; font-weight: bold; font-size: 13px; color: #3b82f6;">เซลล์ BeTon</div>
                 <div class="org-members">
-                    <div class="org-member-item"><span>แซม</span><span class="badge">ผช.</span></div>
-                    <div class="org-member-item"><span>โอเบ</span><span class="badge">ผช.</span></div>
-                    <div class="org-member-item"><span>ดีน</span><span class="badge">ผช.</span></div>
-                </div>
-                <div style="padding: 10px; font-weight: bold; font-size: 13px; color: #10b981; border-top: 1px solid #e2e8f0;">เซลล์ BeStrong</div>
-                <div class="org-members">
-                    <div class="org-member-item"><span>พี่แซนด์</span><span class="badge">หนซ.</span></div>
-                    <div class="org-member-item"><span>เดวิด</span><span class="badge">ผช.</span></div>
-                    <div class="org-member-item"><span>ถั่วพู</span><span class="badge">ผช.</span></div>
+                    <!-- กดที่ชื่อน้องๆ จะลิงก์ไป display.html เพื่อดูการ์ดอวยพร -->
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=แซม'"><span>แซม</span><span class="badge">ผช.</span></div>
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=โอเบ'"><span>โอเบ</span><span class="badge">ผช.</span></div>
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=ดีน'"><span>ดีน</span><span class="badge">ผช.</span></div>
                 </div>
             </div>
 
             <!-- สาย BE TWO -->
             <div class="org-card">
-                <div class="org-head bg-unit2">
-                    <span>หน่วย BE TWO</span>
-                    <span>พี่มุ่ย</span>
+                <div class="org-head bg-unit2" onclick="window.location.href='display.html?target=พี่มุ่ย'">
+                    <span>หน่วย BE TWO</span><span>พี่มุ่ย</span>
                 </div>
-                <div style="padding: 10px; font-weight: bold; font-size: 13px; color: #8b5cf6;">เซลล์ Belove</div>
+                <div style="padding: 10px; font-weight: bold; font-size: 13px; color: #ec4899;">เซลล์ BeBless</div>
                 <div class="org-members">
-                    <div class="org-member-item"><span>จูน</span><span class="badge">ผช.</span></div>
-                    <div class="org-member-item"><span>การ์ตูน</span><span class="badge">ผช.</span></div>
-                </div>
-                <div style="padding: 10px; font-weight: bold; font-size: 13px; color: #f59e0b; border-top: 1px solid #e2e8f0;">เซลล์ BeBless</div>
-                <div class="org-members">
-                    <div class="org-member-item"><span>ส้มโอ</span><span class="badge">สช.</span></div>
-                    <div class="org-member-item"><span>ชมพู่</span><span class="badge">สช.</span></div>
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=ส้มโอ'"><span>ส้มโอ</span><span class="badge">สช.</span></div>
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=ชมพู่'"><span>ชมพู่</span><span class="badge">สช.</span></div>
                 </div>
             </div>
         </div>
 
-
-        <!-- ================= TAB 3: เซลล์ของฉัน ================= -->
+        <!-- ================= TAB 3: เซลล์ฉัน ================= -->
         <div id="tab-cell" class="tab-content">
             <div style="text-align: center; padding: 40px 20px; background: white; border-radius: 12px; border: 1px dashed #cbd5e1;">
                 <h3 style="color: #64748b; margin-top: 0;">👥 พื้นที่เซลล์</h3>
-                <p style="font-size: 14px; color: #94a3b8;">
-                    (หน้าสำหรับเช็คตารางเวร และอัปเดตข้อมูลภายในเซลล์ กำลังก่อสร้าง 🚧)
-                </p>
+                <p style="font-size: 14px; color: #94a3b8;">(กำลังก่อสร้าง 🚧)</p>
             </div>
         </div>
 
     </div>
 
     <script>
-        // ฟังก์ชันสลับแท็บ
         function switchTab(tabId, element) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(nav => nav.classList.remove('active'));
-
             document.getElementById('tab-' + tabId).classList.add('active');
             element.classList.add('active');
             window.scrollTo(0, 0);
