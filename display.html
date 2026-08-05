@@ -3,112 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday! 🎂</title>
+    <title>กล่องของขวัญ</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #fdf2f8; margin: 0; padding: 40px 20px; color: #333; text-align: center; }
-        .header { margin-bottom: 40px; animation: fadeInDown 1s ease; }
-        h1 { color: #ec4899; font-size: 36px; margin-bottom: 10px; }
-        .wishes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; max-width: 1000px; margin: 0 auto; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #fdf2f8; margin: 0; padding: 20px; color: #333; text-align: center; }
+        .back-btn { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #ec4899; font-weight: bold; font-size: 16px; background: white; padding: 8px 15px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: left;}
+        .header { margin-bottom: 30px; }
+        h1 { color: #ec4899; font-size: 28px; margin-bottom: 5px; }
+        .wishes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
         
-        /* สไตล์พื้นฐานของการ์ด */
-        .wish-card { 
-            padding: 25px; 
-            border-radius: 20px; 
-            text-align: left; 
-            opacity: 0; 
-            transform: translateY(30px); 
-            animation: fadeInUp 0.6s ease forwards; 
-            transition: transform 0.3s; 
-            display: flex;
-            flex-direction: column;
-        }
-        .wish-card:hover { transform: translateY(-5px); }
-
-        /* --- กรอบแบบที่ 1: คลาสสิก (Classic) --- */
-        .frame-classic {
-            background: white;
-            box-shadow: 0 10px 20px rgba(236, 72, 153, 0.08);
-            border: 2px solid #fbcfe8;
-        }
-
-        /* --- กรอบแบบที่ 2: โพลารอยด์ (Polaroid) --- */
-        .frame-polaroid {
-            background: white;
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
-            border-radius: 5px; /* เหลี่ยมขึ้นนิดนึงให้เหมือนรูป */
-            padding-bottom: 40px; /* เว้นที่ด้านล่างเยอะๆ */
-        }
-
-        /* --- กรอบแบบที่ 3: ปาร์ตี้ (Party) --- */
-        .frame-party {
-            background: linear-gradient(135deg, #1e3a8a, #7e22ce);
-            color: white;
-            box-shadow: 0 0 15px rgba(126, 34, 206, 0.5);
-            border: 2px dashed #fbbf24;
-        }
-        .frame-party .wish-message, .frame-party .wish-date { color: #f3f4f6; }
-        .frame-party .wish-name { color: #fbbf24; }
-
-        /* ส่วนของรูปภาพที่อัปโหลด */
-        .wish-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover; /* ตัดรูปให้เต็มกรอบสวยๆ */
-            border-radius: 10px;
-            margin-bottom: 15px;
-            background-color: #f3f4f6;
-        }
-        .frame-polaroid .wish-image { border-radius: 0; } /* โพลารอยด์รูปต้องเหลี่ยม */
-
-        /* ส่วนข้อความ */
+        .wish-card { padding: 20px; border-radius: 20px; text-align: left; display: flex; flex-direction: column; background: white;}
+        .frame-classic { border: 2px solid #fbcfe8; }
+        .frame-polaroid { box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); border-radius: 5px; padding-bottom: 30px; }
+        .frame-party { background: linear-gradient(135deg, #1e3a8a, #7e22ce); color: white; }
+        
+        .wish-image { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+        .frame-polaroid .wish-image { border-radius: 0; }
+        
         .wish-message { font-size: 16px; line-height: 1.6; margin-bottom: auto; white-space: pre-line; }
-        .wish-name { font-weight: bold; font-size: 16px; text-align: right; color: #ec4899; margin-top: 15px;}
-        .wish-date { font-size: 12px; color: #9ca3af; text-align: right; margin-top: 5px; }
-
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .wish-name { font-weight: bold; font-size: 15px; text-align: right; color: #ec4899; margin-top: 15px;}
+        .frame-party .wish-message { color: white;}
+        .frame-party .wish-name { color: #fbbf24;}
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Happy Birthday! 🎂🎉</h1>
-        <p>นี่คือกล่องของขวัญที่รวบรวมความรู้สึกดีๆ จากทุกคนถึงคุณ</p>
+    
+    <div style="text-align: left;">
+        <a href="index.html" class="back-btn">← กลับหน้าหลัก</a>
     </div>
-    <div id="loading" style="color: #ec4899; font-size: 18px;">กำลังเปิดกล่องของขวัญ... ⏳</div>
+
+    <div class="header">
+        <h1 id="bdayTitle">กล่องของขวัญ 🎁</h1>
+        <p>กำลังรวบรวมข้อความอวยพร...</p>
+    </div>
+    
     <div id="wishesContainer" class="wishes-grid"></div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbzVyIf_Nl_20thDo7_UO-3KvO-0Eox2HQ3A3i1GnITcZHMDVf7nQGEbCJwxDeo8dlJLzw/exec";
+        // 🛑🛑 นำ URL จาก Apps Script มาใส่ตรงนี้ 🛑🛑
+        const API_URL = "เอา_URL_ที่ได้จาก_APPS_SCRIPT_มาวางตรงนี้";
+
+        // ดึงชื่อเป้าหมายจาก URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const target = urlParams.get('target');
+
+        if (target) {
+            document.getElementById('bdayTitle').innerText = `Happy Birthday ${target}! 🎂`;
+        }
 
         async function fetchWishes() {
             const container = document.getElementById('wishesContainer');
-            const loading = document.getElementById('loading');
-
             try {
-                const response = await fetch(API_URL);
+                // ดึงข้อมูล โดยส่ง target ไปถาม API ด้วย
+                const response = await fetch(`${API_URL}?target=${target}`);
                 const result = await response.json();
-                loading.style.display = 'none';
 
                 if (result.status === "success" && result.data.length > 0) {
-                    result.data.forEach((wish, index) => {
+                    result.data.forEach((wish) => {
                         const card = document.createElement('div');
-                        
-                        // เอาชื่อกรอบจากฐานข้อมูลมาใส่เป็น Class CSS
                         const frameClass = wish.frame ? `frame-${wish.frame}` : 'frame-classic';
                         card.className = `wish-card ${frameClass}`;
-                        card.style.animationDelay = `${index * 0.1}s`;
 
-                        // สร้างแท็กรูปภาพ ถ้าผู้ใช้มีการแนบรูปมา
-                        const imageHTML = wish.image 
-                            ? `<img src="${wish.image}" class="wish-image" alt="ภาพอวยพร">` 
-                            : '';
+                        const imageHTML = wish.image ? `<img src="${wish.image}" class="wish-image">` : '';
 
                         card.innerHTML = `
                             ${imageHTML}
                             <div class="wish-message">"${wish.message}"</div>
-                            <div class="wish-name">จาก: ${wish.name}</div>
-                            <div class="wish-date">${wish.timestamp}</div>
+                            <div class="wish-name">จาก: ${wish.sender}</div>
                         `;
                         container.appendChild(card);
                     });
@@ -116,10 +77,10 @@
                     // จุดพลุ
                     confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
                 } else {
-                    container.innerHTML = '<p>ยังไม่มีคำอวยพร ลองส่งลิงก์ให้เพื่อนๆ เขียนเข้ามาสิ!</p>';
+                    container.innerHTML = '<p style="text-align:center; width:100%;">ยังไม่มีคนส่งคำอวยพรมาเลย เป็นคนแรกสิ! 😊</p>';
                 }
             } catch (error) {
-                loading.innerText = 'เกิดข้อผิดพลาดในการโหลดข้อมูล 😢';
+                container.innerHTML = '<p style="color:red; text-align:center;">โหลดข้อมูลไม่สำเร็จ 😢</p>';
             }
         }
         fetchWishes();
