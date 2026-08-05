@@ -150,15 +150,74 @@
             </div>
         </div>
 
-        <!-- ================= TAB 3: เซลล์ฉัน ================= -->
+  <!-- ================= TAB 3: เซลล์ฉัน ================= -->
         <div id="tab-cell" class="tab-content">
-            <div style="text-align: center; padding: 40px 20px; background: white; border-radius: 12px; border: 1px dashed #cbd5e1;">
-                <h3 style="color: #64748b; margin-top: 0;">👥 พื้นที่เซลล์</h3>
-                <p style="font-size: 14px; color: #94a3b8;">(กำลังก่อสร้าง 🚧)</p>
+            <div class="section-title">👥 เลือกเซลล์ของคุณ</div>
+            
+            <!-- ปุ่มกดเลือกเซลล์ -->
+            <div class="cell-nav">
+                <button class="cell-btn btn-beton" onclick="openCellInfo('beton', this)">BeTon</button>
+                <button class="cell-btn btn-bestrong" onclick="openCellInfo('bestrong', this)">BeStrong</button>
+                <button class="cell-btn btn-belove" onclick="openCellInfo('belove', this)">Belove</button>
+                <button class="cell-btn btn-bebless" onclick="openCellInfo('bebless', this)">BeBless</button>
+            </div>
+
+            <!-- กล่องข้อมูล: BeTon -->
+            <div id="info-beton" class="cell-info-card">
+                <div class="cell-info-title" style="color: #0ea5e9;">เซลล์ BeTon (หน่วย BE ONE)</div>
+                <div class="task-box" style="border-left-color: #0ea5e9;">
+                    <strong>📌 ประกาศเซลล์สัปดาห์นี้:</strong><br>
+                    - ผู้นำนมัสการ: แซม<br>
+                    - เตรียมเกม/กิจกรรม: โอเบ<br>
+                    - ขนม/เครื่องดื่ม: ดีน
+                </div>
+                <div class="org-members">
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=แซม'"><span>แซม</span><span class="badge">ผช.</span></div>
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=โอเบ'"><span>โอเบ</span><span class="badge">ผช.</span></div>
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=ดีน'"><span>ดีน</span><span class="badge">ผช.</span></div>
+                </div>
+            </div>
+
+            <!-- กล่องข้อมูล: BeStrong -->
+            <div id="info-bestrong" class="cell-info-card">
+                <div class="cell-info-title" style="color: #10b981;">เซลล์ BeStrong (หน่วย BE ONE)</div>
+                <div class="task-box" style="border-left-color: #10b981;">
+                    <strong>📌 ประกาศเซลล์สัปดาห์นี้:</strong><br>
+                    - วันศุกร์นี้มีนัดรวมตัวซ้อมดนตรีนะครับ
+                </div>
+                <div class="org-members">
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=พี่แซนด์'"><span>พี่แซนด์</span><span class="badge">หนซ.</span></div>
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=เดวิด'"><span>เดวิด</span><span class="badge">ผช.</span></div>
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=ถั่วพู'"><span>ถั่วพู</span><span class="badge">ผช.</span></div>
+                </div>
+            </div>
+
+            <!-- กล่องข้อมูล: Belove -->
+            <div id="info-belove" class="cell-info-card">
+                <div class="cell-info-title" style="color: #a855f7;">เซลล์ Belove (หน่วย BE TWO)</div>
+                <div class="task-box" style="border-left-color: #a855f7;">
+                    <strong>📌 ประกาศเซลล์สัปดาห์นี้:</strong><br>
+                    - อย่าลืมเตรียมบทเรียนมาแชร์กันนะ!
+                </div>
+                <div class="org-members">
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=จูน'"><span>จูน</span><span class="badge">ผช.</span></div>
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=การ์ตูน'"><span>การ์ตูน</span><span class="badge">ผช.</span></div>
+                </div>
+            </div>
+
+            <!-- กล่องข้อมูล: BeBless -->
+            <div id="info-bebless" class="cell-info-card">
+                <div class="cell-info-title" style="color: #f59e0b;">เซลล์ BeBless (หน่วย BE TWO)</div>
+                <div class="task-box" style="border-left-color: #f59e0b;">
+                    <strong>📌 ประกาศเซลล์สัปดาห์นี้:</strong><br>
+                    - นัดกินข้าวหลังเลิกโบสถ์วันอาทิตย์
+                </div>
+                <div class="org-members">
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=ส้มโอ'"><span>ส้มโอ</span><span class="badge">สช.</span></div>
+                    <div class="org-member-item" onclick="window.location.href='display.html?target=ชมพู่'"><span>ชมพู่</span><span class="badge">สช.</span></div>
+                </div>
             </div>
         </div>
-
-    </div>
 
     <script>
         function switchTab(tabId, element) {
@@ -167,6 +226,18 @@
             document.getElementById('tab-' + tabId).classList.add('active');
             element.classList.add('active');
             window.scrollTo(0, 0);
+        }
+        // ฟังก์ชันสำหรับเปิดข้อมูลเซลล์ (เพิ่มเข้าไปใน script เดิม)
+        function openCellInfo(cellId, btnElement) {
+            // ซ่อนกล่องข้อมูลเซลล์ทั้งหมด
+            document.querySelectorAll('.cell-info-card').forEach(card => card.classList.remove('active'));
+            // เอาคลาส active ออกจากปุ่มทั้งหมด
+            document.querySelectorAll('.cell-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // โชว์กล่องเซลล์ที่เลือก
+            document.getElementById('info-' + cellId).classList.add('active');
+            // ไฮไลต์ปุ่มที่กด
+            btnElement.classList.add('active');
         }
     </script>
 </body>
