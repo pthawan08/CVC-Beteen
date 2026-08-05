@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงทะเบียนเข้าเซลล์</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f4f8; display: flex; flex-direction:column; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        .back-btn { align-self: flex-start; margin-bottom: 20px; text-decoration: none; color: #3b82f6; font-weight: bold; font-size: 16px; background: white; padding: 8px 15px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
+        .form-container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1); width: 100%; max-width: 400px; }
+        h2 { text-align: center; color: #1e293b; margin-top: 0; margin-bottom: 5px; }
+        p { text-align: center; color: #64748b; margin-top: 0; margin-bottom: 20px; font-size: 14px; }
+        label { display: block; margin: 15px 0 5px; color: #475569; font-weight: bold; font-size: 14px; }
+        input[type="text"], input[type="date"], select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; box-sizing: border-box; font-family: inherit; font-size: 16px; background-color: #f8fafc; }
+        input:focus, select:focus { outline: none; border-color: #3b82f6; background-color: white; }
+        button { width: 100%; padding: 14px; background: linear-gradient(135deg, #3b82f6, #0ea5e9); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 25px; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+        button:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">← กลับหน้าหลัก</a>
+
+    <div class="form-container">
+        <h2>ลงทะเบียนสมาชิก 📝</h2>
+        <p>กรอกข้อมูลเพื่อเข้าระบบแขวง BETEEN</p>
+        
+        <form id="registerForm">
+            
+            <label for="nickname">ชื่อเล่น</label>
+            <input type="text" id="nickname" placeholder="เช่น โอเบ, แซม" required>
+
+            <label for="spiritualStatus">สถานะฝ่ายวิญญาณ</label>
+            <select id="spiritualStatus">
+                <option value="ผส.">ผู้สนใจ (ผส.)</option>
+                <option value="ผร.">ผู้รับเชื่อ (ผร.)</option>
+                <option value="สช.">สมาชิก (สช.)</option>
+                <option value="ผช.">พี่เลี้ยง (ผช.)</option>
+                <option value="หนซ.">หัวหน้าเซลล์ (หนซ.)</option>
+                <option value="หนน.">หัวหน้าหน่วย (หนน.)</option>
+            </select>
+
+            <label for="cellName">เซลล์ของคุณ</label>
+            <select id="cellName" required>
+                <option value="">-- เลือกเซลล์ --</option>
+                <optgroup label="หน่วย BE ONE">
+                    <option value="BeTon">BeTon</option>
+                    <option value="BeStrong">BeStrong</option>
+                </optgroup>
+                <optgroup label="หน่วย BE TWO">
+                    <option value="Belove">Belove</option>
+                    <option value="BeBless">BeBless</option>
+                </optgroup>
+            </select>
+
+            <label for="birthdate">วัน/เดือน/ปีเกิด</label>
+            <input type="date" id="birthdate" required>
+
+            <button type="submit" id="submitBtn">บันทึกข้อมูลเข้าเซลล์ 🚀</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // อนาคตจะเขียนโค้ดส่งข้อมูลไป Google Sheets ตรงนี้ครับ
+            const name = document.getElementById('nickname').value;
+            const cell = document.getElementById('cellName').value;
+            const status = document.getElementById('spiritualStatus').value;
+            alert(`จำลองการบันทึก: ยินดีต้อนรับ ${name} (สถานะ ${status}) เข้าสู่เซลล์ ${cell} ครับ! 🎉`);
+        });
+    </script>
+</body>
+</html>
