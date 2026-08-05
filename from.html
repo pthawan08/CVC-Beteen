@@ -3,53 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ส่งคำอวยพรวันเกิด</title>
+    <title>ส่งคำอวยพร</title>
     <style>
-        /* (สไตล์พื้นฐานเดิม) */
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #fdf2f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #fdf2f8; display: flex; flex-direction:column; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        
+        /* ปุ่มกลับหน้าหลัก */
+        .back-btn { align-self: flex-start; margin-bottom: 20px; text-decoration: none; color: #ec4899; font-weight: bold; font-size: 16px; background: white; padding: 8px 15px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
+        
         .form-container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(236, 72, 153, 0.1); width: 100%; max-width: 400px; }
-        h2 { text-align: center; color: #333; margin-top: 0; }
+        h2 { text-align: center; color: #333; margin-top: 0; margin-bottom: 5px; }
+        h4 { text-align: center; color: #ec4899; margin-top: 0; margin-bottom: 20px; }
         label { display: block; margin: 15px 0 5px; color: #666; font-weight: bold; font-size: 14px; }
         input[type="text"], textarea, input[type="file"] { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-family: inherit; font-size: 16px; }
-        
-        /* สไตล์สำหรับเลือกกรอบ */
         .frame-options { display: flex; gap: 10px; margin-bottom: 20px; }
         .frame-option { flex: 1; text-align: center; }
         .frame-option input[type="radio"] { display: none; }
-        .frame-option label { margin: 0; padding: 10px; border: 2px solid #eee; border-radius: 10px; cursor: pointer; transition: 0.3s; font-size: 12px; }
+        .frame-option label { margin: 0; padding: 10px; border: 2px solid #eee; border-radius: 10px; cursor: pointer; transition: 0.3s; font-size: 12px; display: block;}
         .frame-option input[type="radio"]:checked + label { border-color: #ec4899; background-color: #fdf2f8; color: #ec4899; }
-        
-        /* สไตล์ปุ่ม */
         button { width: 100%; padding: 14px; background-color: #ec4899; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
-        button:disabled { background-color: #fbcfe8; cursor: not-allowed; }
+        button:disabled { background-color: #fbcfe8; }
         .status-message { margin-top: 15px; text-align: center; color: #10b981; font-weight: bold; display: none; padding: 10px; background-color: #d1fae5; border-radius: 8px; }
     </style>
 </head>
 <body>
 
+    <a href="index.html" class="back-btn">← กลับหน้าหลัก</a>
+
     <div class="form-container">
-        <h2>ส่งคำอวยพร 🎂</h2>
+        <h2>เขียนคำอวยพร 🎂</h2>
+        <h4 id="targetNameDisplay">ส่งให้: ...</h4>
+        
         <form id="wishForm">
             <label>เลือกสไตล์การ์ด</label>
             <div class="frame-options">
-                <div class="frame-option">
-                    <input type="radio" id="frame-classic" name="frame" value="classic" checked>
-                    <label for="frame-classic">คลาสสิก 🌸</label>
-                </div>
-                <div class="frame-option">
-                    <input type="radio" id="frame-polaroid" name="frame" value="polaroid">
-                    <label for="frame-polaroid">โพลารอยด์ 📷</label>
-                </div>
-                <div class="frame-option">
-                    <input type="radio" id="frame-party" name="frame" value="party">
-                    <label for="frame-party">ปาร์ตี้ 🎉</label>
-                </div>
+                <div class="frame-option"><input type="radio" id="f1" name="frame" value="classic" checked><label for="f1">คลาสสิก</label></div>
+                <div class="frame-option"><input type="radio" id="f2" name="frame" value="polaroid"><label for="f2">โพลารอยด์</label></div>
+                <div class="frame-option"><input type="radio" id="f3" name="frame" value="party"><label for="f3">ปาร์ตี้</label></div>
             </div>
 
-            <label for="imageUpload">แนบรูปภาพ (มีหรือไม่มีก็ได้)</label>
+            <label for="imageUpload">แนบรูปภาพ (ถ้ามี)</label>
             <input type="file" id="imageUpload" accept="image/*">
 
-            <label for="name">ชื่อของคุณ</label>
+            <label for="name">ชื่อของคุณ (ผู้ส่ง)</label>
             <input type="text" id="name" required placeholder="เช่น พี่โอเบ, น้องเอ">
 
             <label for="message">คำอวยพร</label>
@@ -61,9 +56,14 @@
     </div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbzVyIf_Nl_20thDo7_UO-3KvO-0Eox2HQ3A3i1GnITcZHMDVf7nQGEbCJwxDeo8dlJLzw/exec";
+        // 🛑🛑 นำ URL จาก Apps Script มาใส่ตรงนี้ 🛑🛑
+        const API_URL = "เอา_URL_ที่ได้จาก_APPS_SCRIPT_มาวางตรงนี้";
 
-        // ฟังก์ชันบีบอัดรูปภาพก่อนส่ง ป้องกัน Google Sheets พัง
+        // ดึงชื่อเป้าหมายจาก URL (?target=ชื่อ)
+        const urlParams = new URLSearchParams(window.location.search);
+        const target = urlParams.get('target') || 'ไม่ระบุชื่อ';
+        document.getElementById('targetNameDisplay').innerText = `ส่งให้: ${target}`;
+
         async function processImage(file) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -71,22 +71,11 @@
                     const img = new Image();
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        const MAX_SIZE = 400; // ย่อขนาดไม่ให้เกิน 400px
-                        let width = img.width;
-                        let height = img.height;
-
-                        if (width > height && width > MAX_SIZE) {
-                            height *= MAX_SIZE / width; width = MAX_SIZE;
-                        } else if (height > MAX_SIZE) {
-                            width *= MAX_SIZE / height; height = MAX_SIZE;
-                        }
-
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-                        
-                        // แปลงเป็น Base64 แบบ JPEG คุณภาพ 70%
+                        const MAX_SIZE = 400; let width = img.width; let height = img.height;
+                        if (width > height && width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; } 
+                        else if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
+                        canvas.width = width; canvas.height = height;
+                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
                         resolve(canvas.toDataURL('image/jpeg', 0.7)); 
                     };
                     img.src = e.target.result;
@@ -100,7 +89,7 @@
             const submitBtn = document.getElementById('submitBtn');
             const statusMessage = document.getElementById('statusMessage');
             
-            submitBtn.innerText = 'กำลังประมวลผล... ⏳';
+            submitBtn.innerText = 'กำลังส่ง... 🚀';
             submitBtn.disabled = true;
             statusMessage.style.display = 'none';
 
@@ -108,32 +97,29 @@
                 const name = document.getElementById('name').value;
                 const message = document.getElementById('message').value;
                 const frame = document.querySelector('input[name="frame"]:checked').value;
-                
                 const imageFile = document.getElementById('imageUpload').files[0];
                 let imageBase64 = "";
                 
-                // ถ้ายูสเซอร์เลือกรูป ให้ย่อรูปก่อน
-                if (imageFile) {
-                    imageBase64 = await processImage(imageFile);
-                }
+                if (imageFile) imageBase64 = await processImage(imageFile);
 
-                submitBtn.innerText = 'กำลังส่ง... 🚀';
-
+                // ยิงข้อมูลไป Google Sheets (เพิ่ม target เข้าไปด้วย)
                 await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ name, message, frame, image: imageBase64 })
+                    body: JSON.stringify({ target: target, sender: name, message: message, frame: frame, image: imageBase64 })
                 });
 
                 statusMessage.style.display = 'block';
                 document.getElementById('wishForm').reset();
-                
             } catch (error) {
                 alert('เกิดข้อผิดพลาด ลองใหม่อีกครั้งนะครับ');
             } finally {
                 submitBtn.innerText = 'ส่งคำอวยพรเลย! 🚀';
                 submitBtn.disabled = false;
-                setTimeout(() => statusMessage.style.display = 'none', 3000);
+                setTimeout(() => { 
+                    statusMessage.style.display = 'none'; 
+                    window.location.href = 'index.html'; // ส่งเสร็จเด้งกลับหน้าแรก
+                }, 2000);
             }
         });
     </script>
