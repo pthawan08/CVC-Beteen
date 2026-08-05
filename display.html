@@ -43,7 +43,6 @@
         // 🛑🛑 นำ URL จาก Apps Script มาใส่ตรงนี้ 🛑🛑
         const API_URL = "https://script.google.com/macros/s/AKfycbyxF8L7G5D9rmZR7PVeR3B4yQbULzAzQG0Dfo1aCQdj-FWqueb5cnelpCnKuTBEk04dpw/exec";
 
-        // ดึงชื่อเป้าหมายจาก URL
         const urlParams = new URLSearchParams(window.location.search);
         const target = urlParams.get('target');
 
@@ -51,10 +50,60 @@
             document.getElementById('bdayTitle').innerText = `Happy Birthday ${target}! 🎂`;
         }
 
+        // --- ฟังก์ชันสร้างระบบขูดการ์ด ---
+        function initScratchCard(canvas) {
+            const ctx = canvas.getContext('2d');
+            
+            // ตั้งค่าขนาด canvas ให้เท่ากับขนาดของการ์ด
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            // เทสีปิดทับ (ฟอยล์สีเทาอมชมพู)
+            ctx.fillStyle = '#cbd5e1'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // เขียนข้อความบนฟอยล์
+            ctx.font = 'bold 20px "Segoe UI", Tahoma, sans-serif';
+            ctx.fillStyle = '#475569';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🪙 ใช้นิ้วถูเพื่อเปิดดูของขวัญ!', canvas.width/2, canvas.height/2);
+
+            let isDrawing = false;
+
+            function getCoordinates(e) {
+                const rect = canvas.getBoundingClientRect();
+                if (e.touches && e.touches.length > 0) {
+                    return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
+                }
+                return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+            }
+
+            function scratch(e) {
+                if (!isDrawing) return;
+                e.preventDefault(); // ป้องกันหน้าจอเลื่อนตอนถู
+                const pos = getCoordinates(e);
+                
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 25, 0, 2 * Math.PI); // ขนาดของ "เหรียญ" ที่ใช้ขูด
+                ctx.fill();
+            }
+
+            // รองรับการใช้เมาส์ (PC)
+            canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('mousemove', scratch);
+            window.addEventListener('mouseup', () => isDrawing = false);
+
+            // รองรับการใช้นิ้วสัมผัส (Mobile)
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
+            canvas.addEventListener('touchmove', scratch, {passive: false});
+            window.addEventListener('touchend', () => isDrawing = false);
+        }
+
         async function fetchWishes() {
             const container = document.getElementById('wishesContainer');
             try {
-                // ดึงข้อมูล โดยส่ง target ไปถาม API ด้วย
                 const response = await fetch(`${API_URL}?target=${target}`);
                 const result = await response.json();
 
@@ -62,16 +111,28 @@
                     result.data.forEach((wish) => {
                         const card = document.createElement('div');
                         const frameClass = wish.frame ? `frame-${wish.frame}` : 'frame-classic';
+                        // เพิ่ม position: relative เพื่อให้ Canvas ซ้อนทับได้พอดี
                         card.className = `wish-card ${frameClass}`;
+                        card.style.position = 'relative'; 
+                        card.style.overflow = 'hidden'; // กันฟอยล์ล้นกรอบ
 
                         const imageHTML = wish.image ? `<img src="${wish.image}" class="wish-image">` : '';
 
+                        // ใส่ Canvas ไว้ชั้นบนสุด (z-index: 10)
                         card.innerHTML = `
-                            ${imageHTML}
-                            <div class="wish-message">"${wish.message}"</div>
-                            <div class="wish-name">จาก: ${wish.sender}</div>
+                            <canvas class="scratch-pad" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; cursor: pointer;"></canvas>
+                            <div style="position: relative; z-index: 1; user-select: none;">
+                                ${imageHTML}
+                                <div class="wish-message">"${wish.message}"</div>
+                                <div class="wish-name">จาก: ${wish.sender}</div>
+                            </div>
                         `;
                         container.appendChild(card);
+
+                        // เรียกใช้งานฟังก์ชันขูดการ์ดบน Canvas ของการ์ดใบนี้
+                        const canvas = card.querySelector('.scratch-pad');
+                        // ใช้ setTimeout เพื่อรอให้เบราว์เซอร์วาดขนาดการ์ดเสร็จก่อน ค่อยเทสีทับ
+                        setTimeout(() => initScratchCard(canvas), 100); 
                     });
                     
                     // จุดพลุ
