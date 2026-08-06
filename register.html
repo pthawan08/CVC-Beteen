@@ -7,12 +7,14 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f4f8; display: flex; flex-direction:column; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
         .back-btn { align-self: flex-start; margin-bottom: 20px; text-decoration: none; color: #3b82f6; font-weight: bold; font-size: 16px; background: white; padding: 8px 15px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
-        .form-container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1); width: 100%; max-width: 400px; }
+        .form-container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1); width: 100%; max-width: 400px; margin-bottom: 30px; }
         h2 { text-align: center; color: #1e293b; margin-top: 0; margin-bottom: 5px; }
         p { text-align: center; color: #64748b; margin-top: 0; margin-bottom: 20px; font-size: 14px; }
         label { display: block; margin: 15px 0 5px; color: #475569; font-weight: bold; font-size: 14px; }
         input[type="text"], input[type="date"], select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; box-sizing: border-box; font-family: inherit; font-size: 16px; background-color: #f8fafc; }
         input:focus, select:focus { outline: none; border-color: #3b82f6; background-color: white; }
+        .row { display: flex; gap: 10px; }
+        .col { flex: 1; }
         button { width: 100%; padding: 14px; background: linear-gradient(135deg, #3b82f6, #0ea5e9); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 25px; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
         button:active { transform: scale(0.98); }
     </style>
@@ -27,8 +29,25 @@
         
         <form id="registerForm">
             
+            <div class="row">
+                <div class="col">
+                    <label for="realname">ชื่อจริง</label>
+                    <input type="text" id="realname" placeholder="ชื่อจริง" required>
+                </div>
+                <div class="col">
+                    <label for="lastname">นามสกุล</label>
+                    <input type="text" id="lastname" placeholder="นามสกุล" required>
+                </div>
+            </div>
+
             <label for="nickname">ชื่อเล่น</label>
             <input type="text" id="nickname" placeholder="เช่น โอเบ, แซม" required>
+
+            <label for="contact">ช่องทางติดต่อ (Line ID / เบอร์โทร)</label>
+            <input type="text" id="contact" placeholder="เช่น 081-xxx-xxxx" required>
+
+            <label for="disease">โรคประจำตัว / แพ้อาหาร (ถ้าไม่มีใส่ -)</label>
+            <input type="text" id="disease" placeholder="เช่น แพ้กุ้ง, หอบหืด, -" required>
 
             <label for="spiritualStatus">สถานะฝ่ายวิญญาณ</label>
             <select id="spiritualStatus">
@@ -61,13 +80,51 @@
     </div>
 
     <script>
-        document.getElementById('registerForm').addEventListener('submit', (e) => {
+        // 🛑 นำ URL จาก Apps Script มาใส่ตรงนี้ 🛑
+        const API_URL = "เอา_URL_ที่ได้จาก_APPS_SCRIPT_มาวางตรงนี้";
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            // อนาคตจะเขียนโค้ดส่งข้อมูลไป Google Sheets ตรงนี้ครับ
-            const name = document.getElementById('nickname').value;
-            const cell = document.getElementById('cellName').value;
+            const submitBtn = document.getElementById('submitBtn');
+            
+            submitBtn.innerText = 'กำลังบันทึกข้อมูล... 🚀';
+            submitBtn.disabled = true;
+
+            const realname = document.getElementById('realname').value;
+            const lastname = document.getElementById('lastname').value;
+            const nickname = document.getElementById('nickname').value;
+            const contact = document.getElementById('contact').value;
+            const disease = document.getElementById('disease').value;
             const status = document.getElementById('spiritualStatus').value;
-            alert(`จำลองการบันทึก: ยินดีต้อนรับ ${name} (สถานะ ${status}) เข้าสู่เซลล์ ${cell} ครับ! 🎉`);
+            const cell = document.getElementById('cellName').value;
+            const birthdate = document.getElementById('birthdate').value;
+
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ 
+                        action: "register", 
+                        realname: realname,
+                        lastname: lastname,
+                        nickname: nickname, 
+                        contact: contact,
+                        disease: disease,
+                        status: status, 
+                        cell: cell, 
+                        birthdate: birthdate 
+                    })
+                });
+
+                alert(`ยินดีต้อนรับ ${nickname} เข้าสู่เซลล์ ${cell} ครับ! 🎉`);
+                window.location.href = 'index.html'; 
+                
+            } catch (error) {
+                alert('เกิดข้อผิดพลาด ลองใหม่อีกครั้งนะครับ');
+            } finally {
+                submitBtn.innerText = 'บันทึกข้อมูลเข้าเซลล์ 🚀';
+                submitBtn.disabled = false;
+            }
         });
     </script>
 </body>
